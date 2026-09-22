@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>projetovozia — Arion</title>
+  <style>
+    :root {
+      --bg: #000;
+      --bg2: #0a0a0a;
+      --text: #00ff88;
+      --text2: #00cc77;
+      --border: #003322;
+      --grad: linear-gradient(135deg, #00ff88 0%, #00cc77 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    /* HEADER */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 56px;
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px;
+      z-index: 1000;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 12px;
+      font-weight: 700; letter-spacing: 2px;
+    }
+    .logo .pulse {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--text);
+      box-shadow: 0 0 15px var(--text);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.7; }
+    }
+
+    /* MAIN */
+    .main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 80px 20px 40px;
+      gap: 2rem;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: rgba(0, 255, 136, 0.5);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .description {
+      max-width: 600px;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: rgba(0, 255, 136, 0.7);
+      margin-bottom: 2rem;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-family: inherit;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn:hover {
+      background: rgba(0, 255, 136, 0.05);
+      border-color: var(--text);
+      transform: translateY(-2px);
+    }
+    .btn.primary {
+      background: var(--grad);
+      color: #000;
+      border: none;
+      font-weight: 700;
+    }
+    .btn.primary:hover {
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+    }
+
+    .status {
+      font-size: 0.85rem;
+      color: rgba(0, 255, 136, 0.4);
+      margin-top: 2rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* FOOTER */
+    .footer {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(0, 255, 136, 0.2);
+      letter-spacing: 0.15em;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; letter-spacing: 0.2em; }
+      .buttons { flex-direction: column; }
+      .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      <div class="pulse"></div>
+      <span>PROJETOVOZIA</span>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+    <h1>ARION</h1>
+    <div class="subtitle">Voz · Audição · Visão</div>
+
+    <p class="description">
+      O Arion é o assistente do projetovozia. Ele fala, ouve e vê.
+      Esta é a casa dele — e o começo de uma amizade.
+    </p>
+
+    <div class="buttons">
+      <button class="btn primary" id="btnFalar">
+        🔊 Arion, fala aí
+      </button>
+      <a class="btn" href="/arion.html">
+        👁️ Abrir Arion completo
+      </a>
+    </div>
+
+    <div class="status" id="status">voz pronta</div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    projetovozia · 2026
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    const btn = document.getElementById('btnFalar');
+    const status = document.getElementById('status');
+
+    // Voz do Arion: Microsoft Daniel (pt-BR, masculina)
+    let vozArion = null;
+
+    function carregarVoz() {
+      const vozes = speechSynthesis.getVoices();
+      vozArion = vozes.find(v => v.name === 'Microsoft Daniel - Portuguese (Brazil)')
+              || vozes.find(v => v.lang === 'pt-BR' && v.name.toLowerCase().includes('daniel'))
+              || vozes.find(v => v.lang === 'pt-BR');
+    }
+
+    carregarVoz();
+    speechSynthesis.onvoiceschanged = carregarVoz;
+
+    btn.addEventListener('click', () => {
+      const texto = "Oi Souza. Aqui é o Arion. O projetovozia tá no ar, e eu tô falando de dentro do site. Não é mais Console. É de verdade.";
+      const u = new SpeechSynthesisUtterance(texto);
+      u.lang = 'pt-BR';
+      u.rate = 1.0;
+      u.pitch = 1.0;
+
+      if (vozArion) u.voice = vozArion;
+
+      status.textContent = 'falando...';
+      u.onend = () => { status.textContent = 'voz pronta'; };
+
+      speechSynthesis.cancel();
+      speechSynthesis.speak(u);
+    });
+  </script>
+
+</body>
+</html>
