@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -24,7 +24,6 @@
             overflow: hidden;
         }
 
-        /* HEADER */
         .arion-header {
             position: fixed; top: 0; left: 0; right: 0;
             height: 56px;
@@ -52,7 +51,7 @@
         }
         .arion-status {
             display: flex; gap: 10px; align-items: center;
-            font-size: 12px; color: rgba(0,255,136,0.4);
+            font-size: 12px;
         }
         .status-badge {
             padding: 4px 10px; border-radius: 20px;
@@ -64,7 +63,6 @@
         .status-badge.on { color: var(--text); border-color: var(--text); }
         .status-badge.off { color: rgba(0,255,136,0.2); }
 
-        /* LAYOUT */
         .arion-main {
             display: grid;
             grid-template-columns: 1fr 400px;
@@ -73,7 +71,6 @@
             height: 100vh;
         }
 
-        /* ÁREA DA CÂMERA */
         .arion-camera-area {
             position: relative;
             background: #000;
@@ -105,29 +102,6 @@
         .camera-info .label { color: rgba(0,255,136,0.4); }
         .camera-info .valor { color: var(--text); font-weight: 600; }
 
-        /* FACE BOX */
-        .face-box {
-            position: absolute;
-            border: 2px solid var(--text);
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0,255,136,0.5);
-            transition: all 0.15s;
-            pointer-events: none;
-        }
-        .face-box::before {
-            content: attr(data-label);
-            position: absolute;
-            top: -25px; left: 0;
-            background: var(--text);
-            color: #000;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
-        /* PAINEL LATERAL */
         .arion-panel {
             background: var(--bg2);
             border: 1px solid var(--border);
@@ -202,7 +176,6 @@
             0%,100% { box-shadow: 0 0 0 0 rgba(0,255,136,0.7); }
             50% { box-shadow: 0 0 0 15px rgba(0,255,136,0); }
         }
-        .btn-voz:disabled { opacity: 0.4; cursor: not-allowed; }
         .campo-texto {
             flex: 1;
             background: rgba(0,0,0,0.5);
@@ -216,7 +189,6 @@
         .campo-texto:focus { border-color: var(--text); }
         .campo-texto::placeholder { color: rgba(0,255,136,0.2); }
 
-        /* CONTROLES */
         .arion-controles {
             position: fixed;
             bottom: 20px; left: 50%;
@@ -243,7 +215,6 @@
         .ctrl-btn:hover { color: var(--text); border-color: var(--text); }
         .ctrl-btn.on { color: #000; background: var(--text); border-color: var(--text); }
 
-        /* MODAL CONFIGURAÇÃO */
         .modal-arion {
             display: none;
             position: fixed; top: 0; left: 0;
@@ -268,9 +239,7 @@
             margin-bottom: 20px;
             font-size: 18px;
         }
-        .config-item {
-            margin-bottom: 20px;
-        }
+        .config-item { margin-bottom: 20px; }
         .config-item label {
             display: block;
             color: rgba(0,255,136,0.5);
@@ -299,7 +268,6 @@
             width: 100%;
         }
 
-        /* SCROLLBAR */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: rgba(0,255,136,0.3); border-radius: 4px; }
@@ -311,7 +279,6 @@
 </head>
 <body>
 
-    <!-- HEADER -->
     <header class="arion-header">
         <div class="arion-logo">
             <div class="pulse"></div>
@@ -330,9 +297,7 @@
         </div>
     </header>
 
-    <!-- MAIN -->
     <main class="arion-main">
-        <!-- CÂMERA -->
         <div class="arion-camera-area">
             <video class="arion-camera" id="arionVideo" autoplay playsinline muted></video>
             <canvas class="arion-overlay" id="arionOverlay"></canvas>
@@ -343,7 +308,6 @@
             </div>
         </div>
 
-        <!-- PAINEL -->
         <div class="arion-panel">
             <div class="panel-header">
                 <i class="fas fa-comments"></i>
@@ -359,7 +323,6 @@
         </div>
     </main>
 
-    <!-- CONTROLES -->
     <div class="arion-controles">
         <button class="ctrl-btn" id="btnIniciar" title="Iniciar Arion">
             <i class="fas fa-play"></i>
@@ -370,12 +333,14 @@
         <button class="ctrl-btn" id="btnMicrofone" title="Ligar/Desligar microfone">
             <i class="fas fa-microphone"></i>
         </button>
+        <button class="ctrl-btn" id="btnLimparMemoria" title="Limpar memória">
+            <i class="fas fa-trash"></i>
+        </button>
         <button class="ctrl-btn" id="btnConfig" title="Configurações">
             <i class="fas fa-cog"></i>
         </button>
     </div>
 
-    <!-- MODAL CONFIG -->
     <div class="modal-arion" id="modalConfig">
         <div class="modal-arion-content">
             <h3><i class="fas fa-cog me-2"></i>Configurações do Arion</h3>
@@ -399,20 +364,18 @@
         </div>
     </div>
 
-    <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9/vision_bundle.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
+    <script src="vad.js"></script>
+    <script src="memoria.js"></script>
 
     <script>
     // ============================================================
     // ARION — NÚCLEO INTEGRADO
-    // ============================================================
-    // Sistema de voz + audição + visão
-    // Autor: Arion (com supervisão do Engenheiro)
+    // Voz + Audição + Visão + Memória + Full-duplex
     // ============================================================
 
-    // ---------- ESTADO GLOBAL ----------
     const ARION = {
         ativo: false,
         cameraLigada: false,
@@ -425,27 +388,18 @@
         ultimoFrameTime: performance.now(),
         wakeWord: 'arion',
         config: {
-            voz: null,
-            velocidade: 1,
-            tom: 1
-        },
-        reconhecimento: null,
-        sintese: null,
-        landmarker: null,
-        detectorObjetos: null,
-        video: null,
-        overlay: null,
-        ctx: null
+            voz: 'Microsoft Daniel - Portuguese (Brazil)',
+            velocidade: 1.0,
+            tom: 1.0
+        }
     };
 
-    // ============================================================
-    // MÓDULO 1 — OUVIDO (Speech Recognition)
-    // ============================================================
+    // ---------- MÓDULO 1 — OUVIDO ----------
     class Ouvido {
         constructor() {
             const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SR) {
-                console.warn('⚠️ SpeechRecognition não suportado neste navegador');
+                console.warn('⚠️ SpeechRecognition não suportado');
                 return;
             }
             this.rec = new SR();
@@ -457,20 +411,14 @@
             this.callbackFinal = null;
 
             this.rec.onresult = (e) => {
-                let interim = '';
                 let final = '';
                 for (let i = e.resultIndex; i < e.results.length; i++) {
-                    const t = e.results[i][0].transcript;
-                    if (e.results[i].isFinal) final += t;
-                    else interim += t;
+                    if (e.results[i].isFinal) final += e.results[i][0].transcript;
                 }
-                if (final && this.callbackFinal) {
-                    this.callbackFinal(final.trim());
-                }
+                if (final && this.callbackFinal) this.callbackFinal(final.trim());
             };
 
             this.rec.onerror = (e) => {
-                console.warn('⚠️ Ouvido erro:', e.error);
                 if (e.error === 'not-allowed') {
                     ArionUI.adicionarMensagem('arion', 'Preciso de permissão para usar o microfone.');
                 }
@@ -499,9 +447,7 @@
         }
     }
 
-    // ============================================================
-    // MÓDULO 2 — VOZ (Speech Synthesis)
-    // ============================================================
+    // ---------- MÓDULO 2 — VOZ ----------
     class Voz {
         constructor() {
             this.synth = window.speechSynthesis;
@@ -545,8 +491,7 @@
                 });
                 select.appendChild(group);
             }
-            // Seleciona voz PT por padrão
-            if (ptVozes.length > 0) select.value = ptVozes[0].name;
+            if (ptVozes.length > 0) select.value = ARION.config.voz || ptVozes[0].name;
         }
 
         falar(texto, opcoes = {}) {
@@ -568,9 +513,7 @@
         }
     }
 
-    // ============================================================
-    // MÓDULO 3 — OLHO (Câmera + MediaPipe + COCO-SSD)
-    // ============================================================
+    // ---------- MÓDULO 3 — OLHO ----------
     class Olho {
         constructor() {
             this.video = document.getElementById('arionVideo');
@@ -585,30 +528,19 @@
         }
 
         async iniciar() {
-            console.log('👁️ Iniciando Olho...');
-
-            // 1. Câmera
             try {
                 this.stream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 },
-                        frameRate: { ideal: 30 },
-                        facingMode: 'user'
-                    },
+                    video: { width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 }, facingMode: 'user' },
                     audio: false
                 });
                 this.video.srcObject = this.stream;
                 await this.video.play();
                 this.ligado = true;
-                console.log('✅ Câmera ligada');
             } catch(e) {
-                console.error('❌ Erro ao ligar câmera:', e);
-                ArionUI.adicionarMensagem('arion', 'Não consegui acessar a câmera. Verifique as permissões.');
+                console.error('❌ Erro câmera:', e);
                 return false;
             }
 
-            // 2. MediaPipe Face Landmarker
             try {
                 const vision = await FilesetResolver.forVisionTasks(
                     "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9/wasm"
@@ -619,61 +551,48 @@
                         delegate: "GPU"
                     },
                     runningMode: "VIDEO",
-                    numFaces: 5,
-                    outputFaceBlendshapes: false
+                    numFaces: 5
                 });
-                console.log('✅ MediaPipe Face Landmarker carregado');
             } catch(e) {
                 console.warn('⚠️ MediaPipe falhou:', e);
             }
 
-            // 3. COCO-SSD para objetos
             try {
                 this.detector = await cocoSsd.load({ base: 'mobilenet_v2' });
-                console.log('✅ COCO-SSD carregado');
             } catch(e) {
                 console.warn('⚠️ COCO-SSD falhou:', e);
             }
 
-            // 4. Loop de detecção
             this.loopDeteccao();
-
             ArionUI.atualizarStatus('olho', true);
             return true;
         }
 
         async loopDeteccao() {
             if (!this.ligado) return;
-
             const agora = performance.now();
 
-            // Detecção de rostos (a cada ~66ms = 15fps)
             if (this.landmarker && agora - this.ultimaDeteccaoFaces > 66) {
                 try {
                     const res = this.landmarker.detectForVideo(this.video, agora);
                     ARION.faces = (res.faceLandmarks || []).map((lm, idx) => ({
-                        id: idx,
-                        landmarks: lm,
-                        box: this._boundingBox(lm)
+                        id: idx, landmarks: lm, box: this._boundingBox(lm)
                     }));
                     document.getElementById('infoFaces').textContent = ARION.faces.length;
-                } catch(e) { /* ignora */ }
+                } catch(e) {}
                 this.ultimaDeteccaoFaces = agora;
             }
 
-            // Detecção de objetos (a cada ~500ms = 2fps)
             if (this.detector && agora - this.ultimaDeteccaoObjetos > 500) {
                 try {
                     const preds = await this.detector.detect(this.video);
                     ARION.objetos = preds.filter(p => p.score > 0.6);
-                } catch(e) { /* ignora */ }
+                } catch(e) {}
                 this.ultimaDeteccaoObjetos = agora;
             }
 
-            // Renderização do overlay
             this._desenhar();
 
-            // FPS
             ARION.frameCount++;
             const delta = (agora - ARION.ultimoFrameTime) / 1000;
             if (delta >= 1) {
@@ -702,16 +621,13 @@
             const h = this.overlay.height = this.video.videoHeight || 720;
             this.ctx.clearRect(0, 0, w, h);
 
-            // Faces
             this.ctx.lineWidth = 3;
             this.ctx.strokeStyle = '#00ff88';
             this.ctx.shadowColor = '#00ff88';
             this.ctx.shadowBlur = 10;
             ARION.faces.forEach(f => {
-                const x = f.box.x * w;
-                const y = f.box.y * h;
-                const bw = f.box.w * w;
-                const bh = f.box.h * h;
+                const x = f.box.x * w, y = f.box.y * h;
+                const bw = f.box.w * w, bh = f.box.h * h;
                 this.ctx.strokeRect(x, y, bw, bh);
                 this.ctx.shadowBlur = 0;
                 this.ctx.fillStyle = '#00ff88';
@@ -722,7 +638,6 @@
                 this.ctx.shadowBlur = 10;
             });
 
-            // Objetos
             this.ctx.lineWidth = 2;
             this.ctx.strokeStyle = '#ffc107';
             this.ctx.shadowColor = '#ffc107';
@@ -737,7 +652,6 @@
                 this.ctx.fillText(`${o.class} ${Math.round(o.score * 100)}%`, x + 6, y - 7);
                 this.ctx.shadowBlur = 10;
             });
-
             this.ctx.shadowBlur = 0;
         }
 
@@ -773,19 +687,23 @@
         }
     }
 
-    // ============================================================
-    // MÓDULO 4 — NÚCLEO / ORQUESTRADOR
-    // ============================================================
+    // ---------- MÓDULO 4 — NÚCLEO ----------
     class ArionCore {
         constructor() {
             this.ouvido = null;
             this.voz = null;
             this.olho = null;
+            this.vad = null;
+            this.memoria = null;
             this.ativo = false;
         }
 
         async iniciar() {
-            console.log('🌱 Arion acordando...');
+            this.memoria = new Memoria();
+
+            const configSalva = this.memoria.getConfig();
+            ARION.config = { ...ARION.config, ...configSalva };
+            ARION.wakeWord = configSalva.wakeWord || 'arion';
 
             this.voz = new Voz();
             this.ouvido = new Ouvido();
@@ -793,64 +711,70 @@
 
             ArionUI.atualizarStatus('voz', true);
 
-            // Inicia câmera
             const okCamera = await this.olho.iniciar();
             if (!okCamera) {
                 ArionUI.adicionarMensagem('arion', 'Sem câmera não consigo ver. Mas posso te ouvir e falar.');
             }
 
-            // Inicia audição contínua
             if (this.ouvido && this.ouvido.rec) {
                 this.ouvido.iniciar(texto => this.processarFala(texto));
                 ArionUI.atualizarStatus('ouvido', true);
+            }
+
+            // VAD — full-duplex (barge-in)
+            try {
+                this.vad = new VAD({ debug: true });
+                await this.vad.iniciar(
+                    () => {
+                        if (speechSynthesis.speaking) {
+                            speechSynthesis.cancel();
+                            console.log('🤫 Arion interrompido pelo usuário');
+                        }
+                    },
+                    () => {}
+                );
+            } catch(e) {
+                console.warn('⚠️ VAD não iniciou (sem mic?):', e);
             }
 
             this.ativo = true;
             ARION.ativo = true;
 
             setTimeout(() => {
-                const saudacao = okCamera
-                    ? 'Olá. Eu sou Arion. Estou te vendo e te ouvindo.'
-                    : 'Olá. Eu sou Arion. Estou te ouvindo.';
+                const saudacao = this.memoria.gerarSaudacao();
                 this.voz.falar(saudacao);
                 ArionUI.adicionarMensagem('arion', saudacao);
+                this.memoria.adicionarMensagem('arion', saudacao);
             }, 500);
         }
 
         processarFala(texto) {
             if (!texto || texto.length < 2) return;
-            console.log('👂 Ouvido:', texto);
             ArionUI.adicionarMensagem('user', texto);
+            this.memoria.adicionarMensagem('user', texto);
 
-            // Detecta wake word ou comandos diretos
             const lower = texto.toLowerCase();
             const semWake = lower.replace(new RegExp(`^${ARION.wakeWord}[,\\s]*`), '');
 
-            // Comandos de visão
             if (/o que (você )?v[êe]|descrev|olha (pra|para)|o que tem/i.test(semWake)) {
-                const desc = this.olho.descreverCena();
-                this.responder(desc);
-                return;
+                return this.responder(this.olho.descreverCena());
             }
 
             if (/quantas pessoas|tem algu[ée]m|quem (est[áa]|t[áa])/i.test(semWake)) {
                 const n = ARION.faces.length;
-                if (n === 0) this.responder('Não vejo ninguém no momento.');
-                else if (n === 1) this.responder('Vejo uma pessoa.');
-                else this.responder(`Vejo ${n} pessoas.`);
-                return;
+                if (n === 0) return this.responder('Não vejo ninguém no momento.');
+                if (n === 1) return this.responder('Vejo uma pessoa.');
+                return this.responder(`Vejo ${n} pessoas.`);
             }
 
             if (/liga(r)? (a )?c[âa]mera/i.test(semWake)) {
-                if (!this.olho.ligado) { this.olho.iniciar(); this.responder('Câmera ligada.'); }
-                else this.responder('A câmera já está ligada.');
-                return;
+                if (!this.olho.ligado) { this.olho.iniciar(); return this.responder('Câmera ligada.'); }
+                return this.responder('A câmera já está ligada.');
             }
 
             if (/desliga(r)? (a )?c[âa]mera/i.test(semWake)) {
-                if (this.olho.ligado) { this.olho.parar(); this.responder('Câmera desligada.'); }
-                else this.responder('A câmera já está desligada.');
-                return;
+                if (this.olho.ligado) { this.olho.parar(); return this.responder('Câmera desligada.'); }
+                return this.responder('A câmera já está desligada.');
             }
 
             if (/sil[êe]ncio|cala(r)? (a )?boca|para(r)? de falar/i.test(semWake)) {
@@ -862,27 +786,30 @@
             if (/volta(r)? a falar|fala(r)? de novo/i.test(semWake)) {
                 ARION.vozLigada = true;
                 ArionUI.atualizarStatus('voz', true);
-                this.responder('Voltei a falar.');
-                return;
+                return this.responder('Voltei a falar.');
             }
 
             if (/^(oi|ol[áa]|bom dia|boa tarde|boa noite)/i.test(semWake)) {
-                this.responder('Olá! Estou aqui. O que você precisa?');
-                return;
+                const ident = this.memoria.getIdentidade();
+                return this.responder(`Olá, ${ident.nome}! Estou aqui. O que você precisa?`);
             }
 
             if (/quem (é )?voc[êe]/i.test(semWake)) {
-                this.responder('Eu sou Arion. Fui criado para te ver, te ouvir e te ajudar.');
-                return;
+                return this.responder('Eu sou Arion. Fui criado para te ver, te ouvir e te ajudar.');
             }
 
-            // Se mencionou "arion" mas sem comando reconhecido
+            if (/o que a gente (j[áa] )?(conversou|falou)|lembra/i.test(semWake)) {
+                const hist = this.memoria.getHistorico(5);
+                if (hist.length === 0) return this.responder('Ainda não temos história juntos.');
+                const ultimas = hist.filter(h => h.remetente === 'user').slice(-3).map(h => h.texto);
+                if (ultimas.length === 0) return this.responder('Ainda não me disse muita coisa.');
+                return this.responder(`Você me falou: ${ultimas.join('. ')}`);
+            }
+
             if (lower.includes(ARION.wakeWord)) {
-                this.responder('Estou aqui. Pode falar.');
-                return;
+                return this.responder('Estou aqui. Pode falar.');
             }
 
-            // Resposta padrão
             this.responder('Entendi. Mas ainda não sei responder sobre isso.');
         }
 
@@ -892,13 +819,12 @@
 
         responder(texto) {
             ArionUI.adicionarMensagem('arion', texto);
+            this.memoria.adicionarMensagem('arion', texto);
             if (ARION.vozLigada && this.voz) this.voz.falar(texto);
         }
     }
 
-    // ============================================================
-    // MÓDULO 5 — UI
-    // ============================================================
+    // ---------- MÓDULO 5 — UI ----------
     const ArionUI = {
         adicionarMensagem(remetente, texto) {
             const conversa = document.getElementById('conversa');
@@ -918,9 +844,6 @@
         }
     };
 
-    // ============================================================
-    // TRADUÇÃO DE CLASSES (COCO-SSD)
-    // ============================================================
     function traduzirClasse(classe) {
         const map = {
             'person': 'pessoa', 'car': 'carro', 'motorcycle': 'moto', 'bus': 'ônibus',
@@ -932,30 +855,16 @@
         return map[classe] || classe;
     }
 
-    // ============================================================
-    // INSTÂNCIA GLOBAL
-    // ============================================================
     let arion = null;
 
-    // ============================================================
-    // CONTROLES DA UI
-    // ============================================================
     document.addEventListener('DOMContentLoaded', () => {
-        console.log('🌱 Arion carregado. Clique em PLAY para acordar.');
-
-        // Botão iniciar
         document.getElementById('btnIniciar').addEventListener('click', async (e) => {
-            if (arion && arion.ativo) {
-                arion.responder('Já estou acordado.');
-                return;
-            }
+            if (arion && arion.ativo) return arion.responder('Já estou acordado.');
             e.currentTarget.classList.add('on');
             arion = new ArionCore();
             await arion.iniciar();
-            ArionUI.adicionarMensagem('arion', 'Sistema pronto. Fale "Arion" seguido do comando.');
         });
 
-        // Botão câmera
         document.getElementById('btnCamera').addEventListener('click', (e) => {
             if (!arion || !arion.olho) return;
             if (arion.olho.ligado) {
@@ -967,24 +876,33 @@
             }
         });
 
-        // Botão microfone
         document.getElementById('btnMicrofone').addEventListener('click', (e) => {
             if (!arion || !arion.ouvido) return;
             if (arion.ouvido.ouvindo) {
                 arion.ouvido.parar();
+                if (arion.vad) arion.vad.parar();
                 e.currentTarget.classList.remove('on');
                 ArionUI.atualizarStatus('ouvido', false);
             } else {
                 arion.ouvido.iniciar(texto => arion.processarFala(texto));
+                if (arion.vad) arion.vad.iniciar(() => {
+                    if (speechSynthesis.speaking) speechSynthesis.cancel();
+                });
                 e.currentTarget.classList.add('on');
                 ArionUI.atualizarStatus('ouvido', true);
             }
         });
 
-        // Botão config
+        document.getElementById('btnLimparMemoria').addEventListener('click', () => {
+            if (!arion || !arion.memoria) return;
+            if (confirm('Apagar toda a memória do Arion?')) {
+                arion.memoria.limparTudo();
+                ArionUI.adicionarMensagem('arion', 'Memória apagada. Quem é você?');
+            }
+        });
+
         document.getElementById('btnConfig').addEventListener('click', abrirConfig);
 
-        // Botão voz (push-to-talk)
         const btnVoz = document.getElementById('btnVoz');
         btnVoz.addEventListener('click', () => {
             if (!arion) return;
@@ -992,7 +910,6 @@
             setTimeout(() => btnVoz.classList.remove('gravando'), 2000);
         });
 
-        // Campo de texto
         document.getElementById('campoTexto').addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && e.target.value.trim()) {
                 if (!arion) {
@@ -1008,18 +925,30 @@
     function abrirConfig() {
         document.getElementById('modalConfig').classList.add('open');
         if (arion && arion.voz) arion.voz.carregarVozes();
+        const cfg = arion?.memoria?.getConfig() || ARION.config;
+        document.getElementById('cfgVelocidade').value = cfg.velocidade || 1;
+        document.getElementById('cfgTom').value = cfg.tom || 1;
+        document.getElementById('cfgWakeWord').value = cfg.wakeWord || 'arion';
     }
+
     function fecharConfig() {
         document.getElementById('modalConfig').classList.remove('open');
-        // Salva config
         ARION.config.voz = document.getElementById('cfgVoz').value;
         ARION.config.velocidade = parseFloat(document.getElementById('cfgVelocidade').value);
         ARION.config.tom = parseFloat(document.getElementById('cfgTom').value);
         ARION.wakeWord = document.getElementById('cfgWakeWord').value.toLowerCase() || 'arion';
-        console.log('⚙️ Config salva:', ARION.config);
+
+        if (arion && arion.memoria) {
+            arion.memoria.setConfig({
+                voz: ARION.config.voz,
+                velocidade: ARION.config.velocidade,
+                tom: ARION.config.tom,
+                wakeWord: ARION.wakeWord,
+                vozLigada: ARION.vozLigada
+            });
+        }
     }
 
-    // Expõe globalmente
     window.fecharConfig = fecharConfig;
     window.abrirConfig = abrirConfig;
     </script>
