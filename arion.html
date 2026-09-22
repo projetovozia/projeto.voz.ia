@@ -23,7 +23,6 @@
             color: var(--text);
             overflow: hidden;
         }
-
         .arion-header {
             position: fixed; top: 0; left: 0; right: 0;
             height: 56px;
@@ -31,18 +30,15 @@
             backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 20px;
-            z-index: 1000;
+            padding: 0 20px; z-index: 1000;
         }
         .arion-logo {
             display: flex; align-items: center; gap: 12px;
             font-weight: 700; letter-spacing: 2px;
         }
         .arion-logo .pulse {
-            width: 12px; height: 12px;
-            border-radius: 50%;
-            background: var(--text);
-            box-shadow: 0 0 15px var(--text);
+            width: 12px; height: 12px; border-radius: 50%;
+            background: var(--text); box-shadow: 0 0 15px var(--text);
             animation: pulse 2s infinite;
         }
         @keyframes pulse {
@@ -50,8 +46,7 @@
             50% { transform: scale(1.3); opacity: 0.7; }
         }
         .arion-status {
-            display: flex; gap: 10px; align-items: center;
-            font-size: 12px;
+            display: flex; gap: 10px; align-items: center; font-size: 12px;
         }
         .status-badge {
             padding: 4px 10px; border-radius: 20px;
@@ -62,86 +57,65 @@
         }
         .status-badge.on { color: var(--text); border-color: var(--text); }
         .status-badge.off { color: rgba(0,255,136,0.2); }
-
+        .status-badge.thinking {
+            color: #ffc107; border-color: #ffc107;
+            animation: thinking 1s infinite;
+        }
+        @keyframes thinking {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
         .arion-main {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 15px;
-            padding: 71px 15px 15px;
-            height: 100vh;
+            display: grid; grid-template-columns: 1fr 400px;
+            gap: 15px; padding: 71px 15px 15px; height: 100vh;
         }
-
         .arion-camera-area {
-            position: relative;
-            background: #000;
+            position: relative; background: #000;
             border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
+            border-radius: 16px; overflow: hidden;
         }
-        .arion-camera {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+        .arion-camera { width: 100%; height: 100%; object-fit: cover; display: block; }
         .arion-overlay {
             position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
+            width: 100%; height: 100%; pointer-events: none;
         }
         .camera-info {
             position: absolute; top: 15px; left: 15px;
-            background: rgba(0,0,0,0.7);
-            padding: 10px 15px; border-radius: 10px;
-            border: 1px solid var(--border);
-            font-size: 12px;
+            background: rgba(0,0,0,0.7); padding: 10px 15px;
+            border-radius: 10px; border: 1px solid var(--border); font-size: 12px;
         }
         .camera-info .linha {
-            display: flex; justify-content: space-between; gap: 15px;
-            margin-bottom: 4px;
+            display: flex; justify-content: space-between; gap: 15px; margin-bottom: 4px;
         }
         .camera-info .label { color: rgba(0,255,136,0.4); }
         .camera-info .valor { color: var(--text); font-weight: 600; }
-
         .arion-panel {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            display: flex; flex-direction: column;
-            overflow: hidden;
+            background: var(--bg2); border: 1px solid var(--border);
+            border-radius: 16px; display: flex; flex-direction: column; overflow: hidden;
         }
         .panel-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border);
-            font-size: 13px; font-weight: 700;
-            letter-spacing: 1px; text-transform: uppercase;
-            display: flex; align-items: center; gap: 10px;
+            padding: 15px 20px; border-bottom: 1px solid var(--border);
+            font-size: 13px; font-weight: 700; letter-spacing: 1px;
+            text-transform: uppercase; display: flex; align-items: center; gap: 10px;
         }
         .conversa {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-            display: flex; flex-direction: column;
-            gap: 12px;
+            flex: 1; overflow-y: auto; padding: 15px;
+            display: flex; flex-direction: column; gap: 12px;
         }
         .mensagem {
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 13px;
-            line-height: 1.5;
-            max-width: 90%;
-            word-wrap: break-word;
+            padding: 10px 14px; border-radius: 12px;
+            font-size: 13px; line-height: 1.5;
+            max-width: 90%; word-wrap: break-word;
         }
         .mensagem.user {
             background: rgba(0,255,136,0.08);
             border: 1px solid var(--border);
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
+            align-self: flex-end; border-bottom-right-radius: 4px;
         }
         .mensagem.arion {
             background: rgba(0,255,136,0.03);
             border: 1px solid var(--border);
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
+            align-self: flex-start; border-bottom-left-radius: 4px;
         }
         .mensagem .remetente {
             font-size: 10px; text-transform: uppercase;
@@ -150,128 +124,78 @@
         }
         .mensagem.user .remetente { color: #fff; }
         .mensagem.arion .remetente { color: var(--text); }
-
         .panel-input {
-            padding: 12px 15px;
-            border-top: 1px solid var(--border);
+            padding: 12px 15px; border-top: 1px solid var(--border);
             display: flex; gap: 8px; align-items: center;
         }
         .btn-voz {
-            width: 48px; height: 48px;
-            border-radius: 50%;
-            background: var(--grad);
-            border: none;
-            color: #000;
-            font-size: 18px;
-            cursor: pointer;
+            width: 48px; height: 48px; border-radius: 50%;
+            background: var(--grad); border: none; color: #000;
+            font-size: 18px; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s;
-            flex-shrink: 0;
+            transition: all 0.3s; flex-shrink: 0;
         }
         .btn-voz:hover { transform: scale(1.05); }
-        .btn-voz.gravando {
-            animation: gravando 1.5s infinite;
-        }
+        .btn-voz.gravando { animation: gravando 1.5s infinite; }
         @keyframes gravando {
             0%,100% { box-shadow: 0 0 0 0 rgba(0,255,136,0.7); }
             50% { box-shadow: 0 0 0 15px rgba(0,255,136,0); }
         }
         .campo-texto {
-            flex: 1;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 14px;
-            outline: none;
+            flex: 1; background: rgba(0,0,0,0.5);
+            border: 1px solid var(--border); color: var(--text);
+            padding: 12px 16px; border-radius: 10px;
+            font-size: 14px; outline: none;
         }
         .campo-texto:focus { border-color: var(--text); }
         .campo-texto::placeholder { color: rgba(0,255,136,0.2); }
-
         .arion-controles {
-            position: fixed;
-            bottom: 20px; left: 50%;
-            transform: translateX(-50%);
-            display: flex; gap: 10px;
-            background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 8px 12px;
-            z-index: 1000;
+            position: fixed; bottom: 20px; left: 50%;
+            transform: translateX(-50%); display: flex; gap: 10px;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(15px);
+            border: 1px solid var(--border); border-radius: 30px;
+            padding: 8px 12px; z-index: 1000;
         }
         .ctrl-btn {
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            background: transparent;
-            border: 1px solid var(--border);
-            color: rgba(0,255,136,0.4);
-            cursor: pointer;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: transparent; border: 1px solid var(--border);
+            color: rgba(0,255,136,0.4); cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s;
-            font-size: 16px;
+            transition: all 0.3s; font-size: 16px;
         }
         .ctrl-btn:hover { color: var(--text); border-color: var(--text); }
         .ctrl-btn.on { color: #000; background: var(--text); border-color: var(--text); }
-
         .modal-arion {
-            display: none;
-            position: fixed; top: 0; left: 0;
+            display: none; position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(10px);
-            z-index: 2000;
-            align-items: center; justify-content: center;
-            padding: 20px;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            z-index: 2000; align-items: center; justify-content: center; padding: 20px;
         }
         .modal-arion.open { display: flex; }
         .modal-arion-content {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 30px;
-            max-width: 500px;
-            width: 100%;
+            background: var(--bg2); border: 1px solid var(--border);
+            border-radius: 16px; padding: 30px; max-width: 500px; width: 100%;
         }
-        .modal-arion-content h3 {
-            color: var(--text);
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
+        .modal-arion-content h3 { color: var(--text); margin-bottom: 20px; font-size: 18px; }
         .config-item { margin-bottom: 20px; }
         .config-item label {
-            display: block;
-            color: rgba(0,255,136,0.5);
-            font-size: 12px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
+            display: block; color: rgba(0,255,136,0.5);
+            font-size: 12px; text-transform: uppercase;
+            margin-bottom: 8px; letter-spacing: 1px;
         }
         .config-item select, .config-item input {
-            width: 100%;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 10px 14px;
-            border-radius: 10px;
-            font-size: 14px;
+            width: 100%; background: rgba(0,0,0,0.5);
+            border: 1px solid var(--border); color: var(--text);
+            padding: 10px 14px; border-radius: 10px; font-size: 14px;
         }
         .btn-fechar {
-            background: var(--grad);
-            color: #000;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
+            background: var(--grad); color: #000; border: none;
+            padding: 10px 24px; border-radius: 10px;
+            font-weight: 700; cursor: pointer; width: 100%;
         }
-
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: rgba(0,255,136,0.3); border-radius: 4px; }
-
         @media (max-width: 900px) {
             .arion-main { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
         }
@@ -285,15 +209,9 @@
             <span>ARION</span>
         </div>
         <div class="arion-status">
-            <span class="status-badge off" id="statusOlho">
-                <i class="fas fa-eye"></i> OLHO
-            </span>
-            <span class="status-badge off" id="statusOuvido">
-                <i class="fas fa-ear-listen"></i> OUVIDO
-            </span>
-            <span class="status-badge off" id="statusVoz">
-                <i class="fas fa-volume-up"></i> VOZ
-            </span>
+            <span class="status-badge off" id="statusOlho"><i class="fas fa-eye"></i> OLHO</span>
+            <span class="status-badge off" id="statusOuvido"><i class="fas fa-ear-listen"></i> OUVIDO</span>
+            <span class="status-badge off" id="statusVoz"><i class="fas fa-volume-up"></i> VOZ</span>
         </div>
     </header>
 
@@ -324,21 +242,11 @@
     </main>
 
     <div class="arion-controles">
-        <button class="ctrl-btn" id="btnIniciar" title="Iniciar Arion">
-            <i class="fas fa-play"></i>
-        </button>
-        <button class="ctrl-btn" id="btnCamera" title="Ligar/Desligar câmera">
-            <i class="fas fa-video"></i>
-        </button>
-        <button class="ctrl-btn" id="btnMicrofone" title="Ligar/Desligar microfone">
-            <i class="fas fa-microphone"></i>
-        </button>
-        <button class="ctrl-btn" id="btnLimparMemoria" title="Limpar memória">
-            <i class="fas fa-trash"></i>
-        </button>
-        <button class="ctrl-btn" id="btnConfig" title="Configurações">
-            <i class="fas fa-cog"></i>
-        </button>
+        <button class="ctrl-btn" id="btnIniciar" title="Iniciar Arion"><i class="fas fa-play"></i></button>
+        <button class="ctrl-btn" id="btnCamera" title="Ligar/Desligar câmera"><i class="fas fa-video"></i></button>
+        <button class="ctrl-btn" id="btnMicrofone" title="Ligar/Desligar microfone"><i class="fas fa-microphone"></i></button>
+        <button class="ctrl-btn" id="btnLimparMemoria" title="Limpar memória"><i class="fas fa-trash"></i></button>
+        <button class="ctrl-btn" id="btnConfig" title="Configurações"><i class="fas fa-cog"></i></button>
     </div>
 
     <div class="modal-arion" id="modalConfig">
@@ -372,15 +280,17 @@
 
     <script>
     // ============================================================
-    // ARION — NÚCLEO INTEGRADO
-    // Voz + Audição + Visão + Memória + Full-duplex
+    // CONFIG — Supabase Edge Function (Gemini)
     // ============================================================
+    const SUPABASE_PROJECT = 'kqccjteefsjwopmwkjay';
+    const ARION_CHAT_URL = `https://${SUPABASE_PROJECT}.supabase.co/functions/v1/arion-chat`;
 
     const ARION = {
         ativo: false,
         cameraLigada: false,
         micLigado: false,
         vozLigada: true,
+        pensando: false,
         faces: [],
         objetos: [],
         ultimoFps: 0,
@@ -398,10 +308,7 @@
     class Ouvido {
         constructor() {
             const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SR) {
-                console.warn('⚠️ SpeechRecognition não suportado');
-                return;
-            }
+            if (!SR) { console.warn('⚠️ SpeechRecognition não suportado'); return; }
             this.rec = new SR();
             this.rec.lang = 'pt-BR';
             this.rec.continuous = true;
@@ -409,7 +316,6 @@
             this.rec.maxAlternatives = 1;
             this.ouvindo = false;
             this.callbackFinal = null;
-
             this.rec.onresult = (e) => {
                 let final = '';
                 for (let i = e.resultIndex; i < e.results.length; i++) {
@@ -417,20 +323,15 @@
                 }
                 if (final && this.callbackFinal) this.callbackFinal(final.trim());
             };
-
             this.rec.onerror = (e) => {
                 if (e.error === 'not-allowed') {
                     ArionUI.adicionarMensagem('arion', 'Preciso de permissão para usar o microfone.');
                 }
             };
-
             this.rec.onend = () => {
-                if (this.ouvindo) {
-                    try { this.rec.start(); } catch(e) {}
-                }
+                if (this.ouvindo) { try { this.rec.start(); } catch(e) {} }
             };
         }
-
         iniciar(callback) {
             if (!this.rec) return false;
             this.callbackFinal = callback;
@@ -438,12 +339,9 @@
             try { this.rec.start(); } catch(e) {}
             return true;
         }
-
         parar() {
             this.ouvindo = false;
-            if (this.rec) {
-                try { this.rec.stop(); } catch(e) {}
-            }
+            if (this.rec) { try { this.rec.stop(); } catch(e) {} }
         }
     }
 
@@ -457,7 +355,6 @@
                 this.synth.onvoiceschanged = () => this.carregarVozes();
             }
         }
-
         carregarVozes() {
             this.vozes = this.synth.getVoices();
             const select = document.getElementById('cfgVoz');
@@ -465,10 +362,6 @@
             const ptVozes = this.vozes.filter(v => v.lang.startsWith('pt'));
             const outras = this.vozes.filter(v => !v.lang.startsWith('pt'));
             select.innerHTML = '';
-            if (ptVozes.length === 0 && outras.length === 0) {
-                select.innerHTML = '<option value="">Nenhuma voz disponível</option>';
-                return;
-            }
             if (ptVozes.length > 0) {
                 const group = document.createElement('optgroup');
                 group.label = 'Português';
@@ -493,7 +386,6 @@
             }
             if (ptVozes.length > 0) select.value = ARION.config.voz || ptVozes[0].name;
         }
-
         falar(texto, opcoes = {}) {
             if (!ARION.vozLigada || !this.synth) return;
             this.synth.cancel();
@@ -507,10 +399,7 @@
             utt.volume = 1;
             this.synth.speak(utt);
         }
-
-        parar() {
-            if (this.synth) this.synth.cancel();
-        }
+        parar() { if (this.synth) this.synth.cancel(); }
     }
 
     // ---------- MÓDULO 3 — OLHO ----------
@@ -519,14 +408,11 @@
             this.video = document.getElementById('arionVideo');
             this.overlay = document.getElementById('arionOverlay');
             this.ctx = this.overlay.getContext('2d');
-            this.stream = null;
-            this.landmarker = null;
-            this.detector = null;
+            this.stream = null; this.landmarker = null; this.detector = null;
             this.ligado = false;
             this.ultimaDeteccaoObjetos = 0;
             this.ultimaDeteccaoFaces = 0;
         }
-
         async iniciar() {
             try {
                 this.stream = await navigator.mediaDevices.getUserMedia({
@@ -536,11 +422,7 @@
                 this.video.srcObject = this.stream;
                 await this.video.play();
                 this.ligado = true;
-            } catch(e) {
-                console.error('❌ Erro câmera:', e);
-                return false;
-            }
-
+            } catch(e) { console.error('❌ Erro câmera:', e); return false; }
             try {
                 const vision = await FilesetResolver.forVisionTasks(
                     "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9/wasm"
@@ -550,28 +432,18 @@
                         modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
                         delegate: "GPU"
                     },
-                    runningMode: "VIDEO",
-                    numFaces: 5
+                    runningMode: "VIDEO", numFaces: 5
                 });
-            } catch(e) {
-                console.warn('⚠️ MediaPipe falhou:', e);
-            }
-
-            try {
-                this.detector = await cocoSsd.load({ base: 'mobilenet_v2' });
-            } catch(e) {
-                console.warn('⚠️ COCO-SSD falhou:', e);
-            }
-
+            } catch(e) { console.warn('⚠️ MediaPipe falhou:', e); }
+            try { this.detector = await cocoSsd.load({ base: 'mobilenet_v2' }); }
+            catch(e) { console.warn('⚠️ COCO-SSD falhou:', e); }
             this.loopDeteccao();
             ArionUI.atualizarStatus('olho', true);
             return true;
         }
-
         async loopDeteccao() {
             if (!this.ligado) return;
             const agora = performance.now();
-
             if (this.landmarker && agora - this.ultimaDeteccaoFaces > 66) {
                 try {
                     const res = this.landmarker.detectForVideo(this.video, agora);
@@ -582,7 +454,6 @@
                 } catch(e) {}
                 this.ultimaDeteccaoFaces = agora;
             }
-
             if (this.detector && agora - this.ultimaDeteccaoObjetos > 500) {
                 try {
                     const preds = await this.detector.detect(this.video);
@@ -590,21 +461,16 @@
                 } catch(e) {}
                 this.ultimaDeteccaoObjetos = agora;
             }
-
             this._desenhar();
-
             ARION.frameCount++;
             const delta = (agora - ARION.ultimoFrameTime) / 1000;
             if (delta >= 1) {
                 ARION.ultimoFps = Math.round(ARION.frameCount / delta);
-                ARION.frameCount = 0;
-                ARION.ultimoFrameTime = agora;
+                ARION.frameCount = 0; ARION.ultimoFrameTime = agora;
                 document.getElementById('infoFps').textContent = ARION.ultimoFps;
             }
-
             requestAnimationFrame(() => this.loopDeteccao());
         }
-
         _boundingBox(landmarks) {
             let minX = 1, minY = 1, maxX = 0, maxY = 0;
             for (const p of landmarks) {
@@ -615,16 +481,12 @@
             }
             return { x: minX, y: minY, w: maxX - minX, h: maxY - minY };
         }
-
         _desenhar() {
             const w = this.overlay.width = this.video.videoWidth || 1280;
             const h = this.overlay.height = this.video.videoHeight || 720;
             this.ctx.clearRect(0, 0, w, h);
-
-            this.ctx.lineWidth = 3;
-            this.ctx.strokeStyle = '#00ff88';
-            this.ctx.shadowColor = '#00ff88';
-            this.ctx.shadowBlur = 10;
+            this.ctx.lineWidth = 3; this.ctx.strokeStyle = '#00ff88';
+            this.ctx.shadowColor = '#00ff88'; this.ctx.shadowBlur = 10;
             ARION.faces.forEach(f => {
                 const x = f.box.x * w, y = f.box.y * h;
                 const bw = f.box.w * w, bh = f.box.h * h;
@@ -637,9 +499,7 @@
                 this.ctx.fillText('ROSTO ' + (f.id + 1), x + 6, y - 8);
                 this.ctx.shadowBlur = 10;
             });
-
-            this.ctx.lineWidth = 2;
-            this.ctx.strokeStyle = '#ffc107';
+            this.ctx.lineWidth = 2; this.ctx.strokeStyle = '#ffc107';
             this.ctx.shadowColor = '#ffc107';
             ARION.objetos.forEach(o => {
                 const [x, y, bw, bh] = o.bbox;
@@ -654,7 +514,6 @@
             });
             this.ctx.shadowBlur = 0;
         }
-
         parar() {
             this.ligado = false;
             if (this.stream) {
@@ -664,7 +523,6 @@
             this.ctx.clearRect(0, 0, this.overlay.width, this.overlay.height);
             ArionUI.atualizarStatus('olho', false);
         }
-
         descreverCena() {
             const partes = [];
             if (ARION.faces.length > 0) {
@@ -690,17 +548,13 @@
     // ---------- MÓDULO 4 — NÚCLEO ----------
     class ArionCore {
         constructor() {
-            this.ouvido = null;
-            this.voz = null;
-            this.olho = null;
-            this.vad = null;
-            this.memoria = null;
+            this.ouvido = null; this.voz = null; this.olho = null;
+            this.vad = null; this.memoria = null;
             this.ativo = false;
         }
 
         async iniciar() {
             this.memoria = new Memoria();
-
             const configSalva = this.memoria.getConfig();
             ARION.config = { ...ARION.config, ...configSalva };
             ARION.wakeWord = configSalva.wakeWord || 'arion';
@@ -708,7 +562,6 @@
             this.voz = new Voz();
             this.ouvido = new Ouvido();
             this.olho = new Olho();
-
             ArionUI.atualizarStatus('voz', true);
 
             const okCamera = await this.olho.iniciar();
@@ -721,7 +574,6 @@
                 ArionUI.atualizarStatus('ouvido', true);
             }
 
-            // VAD — full-duplex (barge-in)
             try {
                 this.vad = new VAD({ debug: true });
                 await this.vad.iniciar(
@@ -733,9 +585,7 @@
                     },
                     () => {}
                 );
-            } catch(e) {
-                console.warn('⚠️ VAD não iniciou (sem mic?):', e);
-            }
+            } catch(e) { console.warn('⚠️ VAD não iniciou (sem mic?):', e); }
 
             this.ativo = true;
             ARION.ativo = true;
@@ -748,6 +598,43 @@
             }, 500);
         }
 
+        // ============================================================
+        // PENSAR — chama o Gemini via Edge Function
+        // ============================================================
+        async pensar(mensagem) {
+            if (ARION.pensando) return;
+            ARION.pensando = true;
+
+            // Indicador visual de "pensando"
+            const statusVoz = document.getElementById('statusVoz');
+            statusVoz.className = 'status-badge thinking';
+            statusVoz.innerHTML = '<i class="fas fa-brain"></i> PENSANDO';
+
+            try {
+                const historico = this.memoria.getHistorico(10);
+                const identidade = this.memoria.getIdentidade();
+
+                const resp = await fetch(ARION_CHAT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mensagem, historico, identidade })
+                });
+
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const data = await resp.json();
+                const resposta = data?.resposta || 'Não consegui pensar agora.';
+
+                this.responder(resposta);
+
+            } catch (e) {
+                console.error('❌ Gemini erro:', e);
+                this.responder('Tive um problema pra pensar agora. Tenta de novo?');
+            } finally {
+                ARION.pensando = false;
+                ArionUI.atualizarStatus('voz', ARION.vozLigada);
+            }
+        }
+
         processarFala(texto) {
             if (!texto || texto.length < 2) return;
             ArionUI.adicionarMensagem('user', texto);
@@ -756,61 +643,40 @@
             const lower = texto.toLowerCase();
             const semWake = lower.replace(new RegExp(`^${ARION.wakeWord}[,\\s]*`), '');
 
+            // -------- Comandos LOCAIS (instantâneos, sem nuvem) --------
             if (/o que (você )?v[êe]|descrev|olha (pra|para)|o que tem/i.test(semWake)) {
                 return this.responder(this.olho.descreverCena());
             }
-
             if (/quantas pessoas|tem algu[ée]m|quem (est[áa]|t[áa])/i.test(semWake)) {
                 const n = ARION.faces.length;
                 if (n === 0) return this.responder('Não vejo ninguém no momento.');
                 if (n === 1) return this.responder('Vejo uma pessoa.');
                 return this.responder(`Vejo ${n} pessoas.`);
             }
-
             if (/liga(r)? (a )?c[âa]mera/i.test(semWake)) {
                 if (!this.olho.ligado) { this.olho.iniciar(); return this.responder('Câmera ligada.'); }
                 return this.responder('A câmera já está ligada.');
             }
-
             if (/desliga(r)? (a )?c[âa]mera/i.test(semWake)) {
                 if (this.olho.ligado) { this.olho.parar(); return this.responder('Câmera desligada.'); }
                 return this.responder('A câmera já está desligada.');
             }
-
             if (/sil[êe]ncio|cala(r)? (a )?boca|para(r)? de falar/i.test(semWake)) {
                 ARION.vozLigada = false;
                 ArionUI.atualizarStatus('voz', false);
                 return;
             }
-
             if (/volta(r)? a falar|fala(r)? de novo/i.test(semWake)) {
                 ARION.vozLigada = true;
                 ArionUI.atualizarStatus('voz', true);
                 return this.responder('Voltei a falar.');
             }
-
-            if (/^(oi|ol[áa]|bom dia|boa tarde|boa noite)/i.test(semWake)) {
-                const ident = this.memoria.getIdentidade();
-                return this.responder(`Olá, ${ident.nome}! Estou aqui. O que você precisa?`);
-            }
-
             if (/quem (é )?voc[êe]/i.test(semWake)) {
                 return this.responder('Eu sou Arion. Fui criado para te ver, te ouvir e te ajudar.');
             }
 
-            if (/o que a gente (j[áa] )?(conversou|falou)|lembra/i.test(semWake)) {
-                const hist = this.memoria.getHistorico(5);
-                if (hist.length === 0) return this.responder('Ainda não temos história juntos.');
-                const ultimas = hist.filter(h => h.remetente === 'user').slice(-3).map(h => h.texto);
-                if (ultimas.length === 0) return this.responder('Ainda não me disse muita coisa.');
-                return this.responder(`Você me falou: ${ultimas.join('. ')}`);
-            }
-
-            if (lower.includes(ARION.wakeWord)) {
-                return this.responder('Estou aqui. Pode falar.');
-            }
-
-            this.responder('Entendi. Mas ainda não sei responder sobre isso.');
+            // -------- Qualquer outra coisa: MANDA PRA IA --------
+            this.pensar(texto);
         }
 
         processarTexto(texto) {
@@ -841,6 +707,9 @@
             const el = document.getElementById('status' + tipo.charAt(0).toUpperCase() + tipo.slice(1));
             if (!el) return;
             el.className = 'status-badge ' + (ligado ? 'on' : 'off');
+            if (tipo === 'voz') el.innerHTML = '<i class="fas fa-volume-up"></i> VOZ';
+            if (tipo === 'ouvido') el.innerHTML = '<i class="fas fa-ear-listen"></i> OUVIDO';
+            if (tipo === 'olho') el.innerHTML = '<i class="fas fa-eye"></i> OLHO';
         }
     };
 
@@ -912,10 +781,7 @@
 
         document.getElementById('campoTexto').addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && e.target.value.trim()) {
-                if (!arion) {
-                    ArionUI.adicionarMensagem('arion', 'Clique em PLAY primeiro.');
-                    return;
-                }
+                if (!arion) { ArionUI.adicionarMensagem('arion', 'Clique em PLAY primeiro.'); return; }
                 arion.processarTexto(e.target.value.trim());
                 e.target.value = '';
             }
@@ -937,7 +803,6 @@
         ARION.config.velocidade = parseFloat(document.getElementById('cfgVelocidade').value);
         ARION.config.tom = parseFloat(document.getElementById('cfgTom').value);
         ARION.wakeWord = document.getElementById('cfgWakeWord').value.toLowerCase() || 'arion';
-
         if (arion && arion.memoria) {
             arion.memoria.setConfig({
                 voz: ARION.config.voz,
