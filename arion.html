@@ -90,7 +90,6 @@
         .camera-info .label { color: rgba(0,255,136,0.4); }
         .camera-info .valor { color: var(--text); font-weight: 600; }
 
-        /* Barra de sinal do microfone */
         .mic-meter {
             position: absolute;
             bottom: 15px; left: 15px;
@@ -325,6 +324,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
     <script src="vad.js"></script>
     <script src="memoria.js"></script>
+    <script src="transcritor.js"></script>
 
     <script>
     // ============================================================
@@ -352,7 +352,7 @@
         }
     };
 
-    // ---------- MÓDULO 1 — OUVIDO ----------
+    // ---------- MÓDULO 1 — OUVIDO (legado) ----------
     class Ouvido {
         constructor() {
             const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -377,7 +377,6 @@
                 if (interim && this.callbackInterim) this.callbackInterim(interim.trim());
             };
             this.rec.onerror = (e) => {
-                console.warn('⚠️ Ouvido erro:', e.error);
                 if (e.error === 'not-allowed') {
                     ArionUI.adicionarMensagem('arion', 'Preciso de permissão para usar o microfone.');
                 }
@@ -479,19 +478,26 @@
                 this.ligado = true;
             } catch(e) { console.error('❌ Erro câmera:', e); return false; }
             try {
-                const vision = await FilesetResolver.forVisionTasks(
-                    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9/wasm"
-                );
-                this.landmarker = await FaceLandmarker.createFromOptions(vision, {
-                    baseOptions: {
-                        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
-                        delegate: "GPU"
-                    },
-                    runningMode: "VIDEO", numFaces: 5
-                });
+                if (typeof FilesetResolver === 'undefined') {
+                    console.warn('⚠️ MediaPipe não carregou');
+                } else {
+                    const vision = await FilesetResolver.forVisionTasks(
+                        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.9/wasm"
+                    );
+                    this.landmarker = await FaceLandmarker.createFromOptions(vision, {
+                        baseOptions: {
+                            modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+                            delegate: "GPU"
+                        },
+                        runningMode: "VIDEO", numFaces: 5
+                    });
+                }
             } catch(e) { console.warn('⚠️ MediaPipe falhou:', e); }
-            try { this.detector = await cocoSsd.load({ base: 'mobilenet_v2' }); }
-            catch(e) { console.warn('⚠️ COCO-SSD falhou:', e); }
+            try {
+                if (typeof cocoSsd !== 'undefined') {
+                    this.detector = await cocoSsd.load({ base: 'mobilenet_v2' });
+                }
+            } catch(e) { console.warn('⚠️ COCO-SSD falhou:', e); }
             this.loopDeteccao();
             ArionUI.atualizarStatus('olho', true);
             return true;
@@ -605,6 +611,7 @@
         constructor() {
             this.ouvido = null; this.voz = null; this.olho = null;
             this.vad = null; this.memoria = null; this.micMeter = null;
+            this.transcritor = null;
             this.ativo = false;
         }
 
@@ -632,6 +639,18 @@
                 ArionUI.atualizarStatus('ouvido', true);
             }
 
+            // Transcritor (Gemini) — a forma principal
+            try {
+                this.transcritor = new Transcritor({ debug: true });
+                await this.transcritor.iniciar(texto => {
+                    if (texto && texto.length > 1) {
+                        console.log('📝 Transcrito:', texto);
+                        this.processarFala(texto);
+                    }
+                });
+            } catch(e) { console.warn('⚠️ Transcritor não iniciou:', e); }
+
+            // VAD — full-duplex + dispara a gravação
             try {
                 this.vad = new VAD({ debug: true });
                 await this.vad.iniciar(
@@ -640,8 +659,11 @@
                             speechSynthesis.cancel();
                             console.log('🤫 Arion interrompido pelo usuário');
                         }
+                        if (this.transcritor) this.transcritor.comecarGravacao();
                     },
-                    () => {}
+                    () => {
+                        if (this.transcritor) this.transcritor.pararGravacao();
+                    }
                 );
             } catch(e) { console.warn('⚠️ VAD não iniciou:', e); }
 
@@ -866,21 +888,36 @@
         });
 
         document.getElementById('btnMicrofone').addEventListener('click', (e) => {
-            if (!arion || !arion.ouvido) return;
-            if (arion.ouvido.ouvindo) {
-                arion.ouvido.parar();
+            if (!arion) return;
+            const ligado = e.currentTarget.classList.contains('on');
+            if (ligado) {
+                if (arion.ouvido) arion.ouvido.parar();
                 if (arion.vad) arion.vad.parar();
                 if (arion.micMeter) arion.micMeter.parar();
+                if (arion.transcritor) arion.transcritor.parar();
                 e.currentTarget.classList.remove('on');
                 ArionUI.atualizarStatus('ouvido', false);
             } else {
-                arion.ouvido.iniciar(
+                if (arion.ouvido) arion.ouvido.iniciar(
                     texto => arion.processarFala(texto),
                     texto => console.log('🎤 interim:', texto)
                 );
-                if (arion.vad) arion.vad.iniciar(() => {
-                    if (speechSynthesis.speaking) speechSynthesis.cancel();
-                });
+                if (arion.transcritor) {
+                    arion.transcritor.iniciar(texto => {
+                        if (texto && texto.length > 1) arion.processarFala(texto);
+                    });
+                }
+                if (arion.vad) {
+                    arion.vad.iniciar(
+                        () => {
+                            if (speechSynthesis.speaking) speechSynthesis.cancel();
+                            if (arion.transcritor) arion.transcritor.comecarGravacao();
+                        },
+                        () => {
+                            if (arion.transcritor) arion.transcritor.pararGravacao();
+                        }
+                    );
+                }
                 if (arion.micMeter) arion.micMeter.iniciar();
                 e.currentTarget.classList.add('on');
                 ArionUI.atualizarStatus('ouvido', true);
